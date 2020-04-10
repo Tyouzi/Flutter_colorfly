@@ -1,21 +1,21 @@
 import 'package:flutter/cupertino.dart';
 
-class HomePage extends StatefulWidget{
+class Profile extends StatefulWidget{
   @override
-  State<HomePage> createState() {
+  State<StatefulWidget> createState() {
     // TODO: implement createState
-    return  HomePageState();
+    return ProfileState();
   }
 
 }
-class HomePageState extends State<HomePage> {
+class ProfileState extends State<Profile>{
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return new Container(
-        child: new Center(
-          child:Text("1234")
-        )
+      child: new Center(
+        child: Text("abc"),
+      ),
     );
   }
 
