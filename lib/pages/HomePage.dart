@@ -1,8 +1,15 @@
+import 'dart:convert';
+import 'dart:ffi';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_demo/component/gallery_grideview.dart';
+import 'package:flutter_demo/component/gallery/gallery_grideview.dart';
 import 'package:flutter_demo/config/gallery-tab.dart';
+import 'package:flutter_demo/model/Template.dart';
+import 'package:flutter_demo/service/GalleryRequest.dart';
+import 'package:flutter_demo/service/UserRequest.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget{
   @override
@@ -24,10 +31,17 @@ class HomePageState extends State<HomePage>   with SingleTickerProviderStateMixi
     // TODO: implement initState
     super.initState();
     tabController = new TabController(length: GalleryTabNames.tabNames.length, vsync: this);
-    tabController.addListener((){
-      // this.setState((){
-      //   currentIndex = tabController.index;
-      // });
+    SharedPreferences.getInstance().then((sp){
+      var token =sp.getString('token');
+      if(token==null){
+          UserRequest.login();
+      }
+     GalleryRequest.getAllPaintings().then((paintings){
+         print(paintings.data["data"]);
+          List<dynamic> templates = paintings.data["data"];
+           print(Template.map(templates[0]).tags);
+     });
+     
     });
   }
   @override
