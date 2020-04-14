@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_demo/model/template.dart';
 
 class GalleryCells extends StatelessWidget{
+    Template tem;
+    GalleryCells({
+      this.tem
+    });
   @override
   Widget build(BuildContext context) {
+
     // TODO: implement build
     return Container(
       padding: EdgeInsets.all(10),
@@ -11,7 +17,7 @@ class GalleryCells extends StatelessWidget{
         child: Container(
           color: Colors.pink,
           child: Center(
-            child: Text('22222'),
+            child: Text(tem.id),
           ),)
       ),
     );

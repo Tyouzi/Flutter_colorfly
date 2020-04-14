@@ -5,7 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_demo/component/gallery/gallery_grideview.dart';
 import 'package:flutter_demo/config/gallery-tab.dart';
-import 'package:flutter_demo/model/Template.dart';
+import 'package:flutter_demo/model/template.dart';
 import 'package:flutter_demo/service/GalleryRequest.dart';
 import 'package:flutter_demo/service/UserRequest.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
@@ -36,11 +36,7 @@ class HomePageState extends State<HomePage>   with SingleTickerProviderStateMixi
       if(token==null){
           UserRequest.login();
       }
-     GalleryRequest.getAllPaintings().then((paintings){
-         print(paintings.data["data"]);
-          List<dynamic> templates = paintings.data["data"];
-           print(Template.map(templates[0]).tags);
-     });
+
      
     });
   }
