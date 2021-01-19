@@ -1,4 +1,4 @@
-package com.example.flutter_demo
+package com.example.flutter_colorfly
 
 import android.os.Bundle
 

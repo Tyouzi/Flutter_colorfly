@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_demo/pages/Creaction.dart';
-import 'package:flutter_demo/service/FetchClient.dart';
+import 'package:flutter_colorfly/pages/Creaction.dart';
+import 'package:flutter_colorfly/service/FetchClient.dart';
 
 import 'pages/Active.dart';
 import 'pages/HomePage.dart';
@@ -11,7 +11,7 @@ void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
-  
+
   @override
   Widget build(BuildContext context) {
     FetchClient.createInstance();
@@ -36,46 +36,80 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int currentIndex = 0;
 
-  void onTabPress(index){
-    setState((){
-      currentIndex=index;
+  void onTabPress(index) {
+    setState(() {
+      currentIndex = index;
     });
   }
+
   @override
   Widget build(BuildContext context) {
-
-    var children =[new HomePage(),new ShowRoom(),new Creaction(),new Active(),new Profile()];
+    var children = [
+      new HomePage(),
+      new ShowRoom(),
+      new Creaction(),
+      new Active(),
+      new Profile()
+    ];
 
     return Scaffold(
-      body:children[currentIndex],
-      bottomNavigationBar:  BottomNavigationBar(
-          items:  <BottomNavigationBarItem> [
-            BottomNavigationBarItem(
-              icon: new Image.asset(currentIndex==0? 'images/tabbar/biretta@3x.png':'images/tabbar/acclimatising@3x.png',width: 25,height: 25,),
-              title: Text('主页',style: TextStyle(fontWeight: FontWeight.bold),),
+      body: children[currentIndex],
+      bottomNavigationBar: BottomNavigationBar(
+        items: <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: new Image.asset(
+              currentIndex == 0
+                  ? 'images/tabbar/biretta@3x.png'
+                  : 'images/tabbar/acclimatising@3x.png',
+              width: 25,
+              height: 25,
             ),
-            BottomNavigationBarItem(
-              icon: new Image.asset(currentIndex==1? 'images/tabbar/bulbul@3x.png':'images/tabbar/amylene@3x.png',width: 25,height: 25,),
-              title: Text('画廊'),
+            label: "主页",
+          ),
+          BottomNavigationBarItem(
+            icon: new Image.asset(
+              currentIndex == 1
+                  ? 'images/tabbar/bulbul@3x.png'
+                  : 'images/tabbar/amylene@3x.png',
+              width: 25,
+              height: 25,
             ),
-            BottomNavigationBarItem(
-              icon:  new Image.asset(currentIndex==2? 'images/tabbar/baldheads@3x.png':'images/tabbar/brushiest@3x.png',width: 25,height: 25,),
-              title: Text('Creation'),
+            label: '画廊',
+          ),
+          BottomNavigationBarItem(
+            icon: new Image.asset(
+              currentIndex == 2
+                  ? 'images/tabbar/baldheads@3x.png'
+                  : 'images/tabbar/brushiest@3x.png',
+              width: 25,
+              height: 25,
             ),
-            BottomNavigationBarItem(
-              icon: new Image.asset(currentIndex==3? 'images/tabbar/acidimetric@3x.png':'images/tabbar/asseverates@3x.png',width: 25,height: 25,),
-              title: Text('消息'),
+            label: 'Creation',
+          ),
+          BottomNavigationBarItem(
+            icon: new Image.asset(
+              currentIndex == 3
+                  ? 'images/tabbar/acidimetric@3x.png'
+                  : 'images/tabbar/asseverates@3x.png',
+              width: 25,
+              height: 25,
             ),
-            BottomNavigationBarItem(
-              icon: new Image.asset(currentIndex==4? 'images/tabbar/applets@3x.png':'images/tabbar/biocomputing@3x.png',width: 25,height: 25,),
-              title: Text('个人'),
-            )
-          ],
-          selectedItemColor: Colors.amber,
-          currentIndex: currentIndex,
-          
-          onTap: onTabPress,
-
+            label: '消息',
+          ),
+          BottomNavigationBarItem(
+            icon: new Image.asset(
+              currentIndex == 4
+                  ? 'images/tabbar/applets@3x.png'
+                  : 'images/tabbar/biocomputing@3x.png',
+              width: 25,
+              height: 25,
+            ),
+            label: '个人',
+          )
+        ],
+        selectedItemColor: Colors.amber,
+        currentIndex: currentIndex,
+        onTap: onTabPress,
       ),
     );
   }

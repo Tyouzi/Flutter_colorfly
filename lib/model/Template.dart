@@ -32,7 +32,17 @@ class Template {
   String get openTime => _openTime;
   String get updatedTime => _updatedTime;
 
-  Template(this._id, this._isOpen, this._mainTag, this._tags, this._url, this._thumbnailUrl, this._jigsawId, this._jigsawNum, this._openTime, this._updatedTime);
+  Template(
+      this._id,
+      this._isOpen,
+      this._mainTag,
+      this._tags,
+      this._url,
+      this._thumbnailUrl,
+      this._jigsawId,
+      this._jigsawNum,
+      this._openTime,
+      this._updatedTime);
 
   Template.map(dynamic obj) {
     this._id = obj["id"];
@@ -40,7 +50,7 @@ class Template {
     this._mainTag = obj["mainTag"];
     this._tags = obj["tags"].cast<String>();
     this._url = obj["url"];
-    this._thumbnailUrl = obj["thumbnailUrl"];
+    this._thumbnailUrl = obj["thumbnail_url"];
     this._jigsawId = obj["jigsawId"];
     this._jigsawNum = obj["jigsawNum"];
     this._openTime = obj["openTime"];
@@ -54,12 +64,11 @@ class Template {
     map["mainTag"] = _mainTag;
     map["tags"] = _tags;
     map["url"] = _url;
-    map["thumbnailUrl"] = _thumbnailUrl;
+    map["thumbnail_url"] = _thumbnailUrl;
     map["jigsawId"] = _jigsawId;
     map["jigsawNum"] = _jigsawNum;
     map["openTime"] = _openTime;
     map["updatedTime"] = _updatedTime;
     return map;
   }
-
 }

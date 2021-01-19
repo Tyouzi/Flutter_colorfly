@@ -1,4 +1,4 @@
-name: flutter_demo
+name: flutter_colorfly
 description: A new Flutter project.
 
 # The following defines the version and build number for your application.
@@ -46,17 +46,8 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - images/tabbar/acclimatising@3x.png
-    - images/tabbar/acidimetric@3x.png
-    - images/tabbar/amylene@3x.png
-    - images/tabbar/applets@3x.png
-    - images/tabbar/asseverates@3x.png
-    - images/tabbar/baldheads@3x.png
-    - images/tabbar/biocomputing@3x.png
-    - images/tabbar/biretta@3x.png
-    - images/tabbar/brushiest@3x.png
-    - images/tabbar/bulbul@3x.png
-
+    - images/tabbar/.
+    - builtin/
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
 
