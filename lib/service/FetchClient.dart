@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:flutter_colorfly/service/UserRequest.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -5,37 +7,65 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../global.dart';
 
 class FetchClient {
-  static final String ApiHost = "http://13.57.228.178:9000/v2";
+  static final String ApiHost = "https://colorfly.joycastle.mobi/v2";
   static final String ImgHost = "https://colorfly.joycastle.mobi";
   static createInstance() {
     dio.options.baseUrl = ApiHost;
     dio.options.connectTimeout = 15000;
   }
 
-  static Future<Response> get(String url, Map<String, String> map) async {
+  static Future<Response> get(String url, Map<String, dynamic> map) async {
     try {
       var sp = await SharedPreferences.getInstance();
       dio.options.headers["Authorization"] = sp.getString('token');
       print('token === ' + sp.getString('token'));
-      Response response = await dio.get(url, queryParameters: map);
-      return response;
-    } on DioError catch (e) {
-      print(e);
-      if (e.response != null &&
-          (e.response.statusCode == 401 || e.response.statusCode == 403)) {
-        UserRequest.login();
+      Response response = await dio.get(url,
+          queryParameters: map,
+          options: Options(
+              followRedirects: false,
+              validateStatus: (status) {
+                return status < 500;
+              }));
+      if (response.statusCode != null &&
+          (response.statusCode == 401 || response.statusCode == 403)) {
+        UserRequest.login().then((value) {
+          if (value) {
+            FetchClient.get(url, map);
+          }
+        });
       }
+      return response;
+    } catch (e) {
+      print('error ===' + e.message);
     }
   }
 
-  static Future post(String url, Map map) async {
+  static Future post(String url, map) async {
     try {
-      Response response = await dio.post(url, data: map);
+      var sp = await SharedPreferences.getInstance();
+      dio.options.headers["Authorization"] = sp.getString('token');
+      Response response = await dio.post(url,
+          data: map,
+          options: Options(
+              followRedirects: false,
+              validateStatus: (status) {
+                return status < 500;
+              }));
+      if (response.statusCode != null &&
+          (response.statusCode == 401 || response.statusCode == 403)) {
+        UserRequest.login().then((value) {
+          if (value) {
+            FetchClient.post(url, map);
+          }
+        });
+      }
       return response;
-    } on DioError catch (e) {
+    } catch (e) {
+      print('error ===' + e.message);
       if (e.response.statusCode == 401 || e.response.statusCode == 403) {
         UserRequest.login();
       }
     }
   }
 }
+//Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MTEwNTQ5MTMsImlkIjoidTUzMjEyNDIifQ.B1-IPFrBsjqyvvTV3CnBuhF5wSW02g9E_chakQy4L5E

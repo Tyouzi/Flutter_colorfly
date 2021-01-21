@@ -15,7 +15,7 @@ class UserRequest {
     await login();
   }
 
-  static login() async {
+  static Future<bool> login() async {
     var sp = await SharedPreferences.getInstance();
     String id = sp.getString('id');
     if (id != null) {
@@ -24,6 +24,8 @@ class UserRequest {
           await FetchClient.post("/login", {"user_id": id, "password": pwd});
       String token = response.data["token"];
       sp.setString("token", "Bearer " + token);
+      return true;
+      print('User Token Refresh Complate');
     } else {
       regist();
     }

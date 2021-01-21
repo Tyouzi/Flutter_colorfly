@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_colorfly/model/template.dart';
 import 'package:flutter_colorfly/model/template_model.dart';
 
 import 'package:flutter_colorfly/service/FetchClient.dart';

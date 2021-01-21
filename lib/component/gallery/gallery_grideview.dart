@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_colorfly/component/cells/gallery_gridecells.dart';
 import 'package:flutter_colorfly/config/gallery-tab.dart';
-import 'package:flutter_colorfly/model/template.dart';
 import 'package:flutter_colorfly/model/template_model.dart';
 import 'package:flutter_colorfly/service/GalleryRequest.dart';
 
@@ -22,7 +21,8 @@ class GalleryGride extends StatefulWidget {
   }
 }
 
-class GalleryGrideState extends State<GalleryGride> {
+class GalleryGrideState extends State<GalleryGride>
+    with AutomaticKeepAliveClientMixin {
   TabController tabController;
   Map<String, List> data = new HashMap();
   GalleryGrideState({
@@ -91,4 +91,8 @@ class GalleryGrideState extends State<GalleryGride> {
       }).toList(),
     );
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }

@@ -35,8 +35,9 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int currentIndex = 0;
-
+  PageController _pageController = new PageController(initialPage: 0);
   void onTabPress(index) {
+    _pageController.jumpToPage(index);
     setState(() {
       currentIndex = index;
     });
@@ -53,8 +54,13 @@ class _MyHomePageState extends State<MyHomePage> {
     ];
 
     return Scaffold(
-      body: children[currentIndex],
+      body: PageView(
+        children: children,
+        controller: _pageController,
+        physics: NeverScrollableScrollPhysics(),
+      ),
       bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: new Image.asset(
