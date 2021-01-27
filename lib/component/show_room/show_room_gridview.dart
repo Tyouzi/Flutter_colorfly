@@ -37,9 +37,12 @@ class _ShowRoomGridViewState extends State<ShowRoomGridView>
     print(title);
     if (title == '发现') {
       ShowRoomRequest.getAllPaintings().then((response) {
-        setState(() {
-          dataImg = response.data['data'];
-        });
+        print(response);
+        if (response.data != null) {
+          setState(() {
+            dataImg = response.data['data'];
+          });
+        }
       });
     } else if (title == '热门') {
       ShowRoomRequest.getHotPaintingsList().then((response) {

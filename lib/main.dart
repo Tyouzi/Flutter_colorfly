@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_colorfly/config/routes.dart';
 import 'package:flutter_colorfly/pages/Creaction.dart';
+import 'package:flutter_colorfly/utils/sembast_db.dart';
 import 'package:flutter_colorfly/service/FetchClient.dart';
 
 import 'pages/Active.dart';
@@ -16,7 +18,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     FetchClient.createInstance();
     return MaterialApp(
-      title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
+      routes: Routes.configureRoutes(context),
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
@@ -41,6 +44,13 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       currentIndex = index;
     });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    SemDataBase.initDataBase();
   }
 
   @override

@@ -28,11 +28,10 @@ class FetchClient {
               }));
       if (response.statusCode != null &&
           (response.statusCode == 401 || response.statusCode == 403)) {
-        UserRequest.login().then((value) {
-          if (value) {
-            FetchClient.get(url, map);
-          }
-        });
+        bool result = await UserRequest.login();
+        if (result) {
+          response = await FetchClient.get(url, map);
+        }
       }
       return response;
     } catch (e) {
@@ -53,11 +52,10 @@ class FetchClient {
               }));
       if (response.statusCode != null &&
           (response.statusCode == 401 || response.statusCode == 403)) {
-        UserRequest.login().then((value) {
-          if (value) {
-            FetchClient.post(url, map);
-          }
-        });
+        bool result = await UserRequest.login();
+        if (result) {
+          response = await FetchClient.post(url, map);
+        }
       }
       return response;
     } catch (e) {
