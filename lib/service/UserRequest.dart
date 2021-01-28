@@ -25,9 +25,14 @@ class UserRequest {
       String token = response.data["token"];
       sp.setString("token", "Bearer " + token);
       return true;
-      print('User Token Refresh Complate');
     } else {
       regist();
     }
+  }
+
+  static Future<Response> getUserInfo() async {
+    String requestUri = FetchClient.ApiHost + '/me';
+    Response response = await FetchClient.get(requestUri, {});
+    return response;
   }
 }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_colorfly/config/routes.dart';
+import 'package:flutter_colorfly/global.dart';
 import 'package:flutter_colorfly/pages/Creaction.dart';
+import 'package:flutter_colorfly/utils/HexColor.dart';
 import 'package:flutter_colorfly/utils/sembast_db.dart';
 import 'package:flutter_colorfly/service/FetchClient.dart';
 
@@ -59,7 +61,6 @@ class _MyHomePageState extends State<MyHomePage> {
       new HomePage(),
       new ShowRoom(),
       new Creaction(),
-      new Active(),
       new Profile()
     ];
 
@@ -102,19 +103,19 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             label: 'Creation',
           ),
+          // BottomNavigationBarItem(
+          //   icon: new Image.asset(
+          //     currentIndex == 3
+          //         ? 'images/tabbar/acidimetric@3x.png'
+          //         : 'images/tabbar/asseverates@3x.png',
+          //     width: 25,
+          //     height: 25,
+          //   ),
+          //   label: '消息',
+          // ),
           BottomNavigationBarItem(
             icon: new Image.asset(
               currentIndex == 3
-                  ? 'images/tabbar/acidimetric@3x.png'
-                  : 'images/tabbar/asseverates@3x.png',
-              width: 25,
-              height: 25,
-            ),
-            label: '消息',
-          ),
-          BottomNavigationBarItem(
-            icon: new Image.asset(
-              currentIndex == 4
                   ? 'images/tabbar/applets@3x.png'
                   : 'images/tabbar/biocomputing@3x.png',
               width: 25,
@@ -123,7 +124,7 @@ class _MyHomePageState extends State<MyHomePage> {
             label: '个人',
           )
         ],
-        selectedItemColor: Colors.amber,
+        selectedItemColor: HexColor(themeColor),
         currentIndex: currentIndex,
         onTap: onTabPress,
       ),
