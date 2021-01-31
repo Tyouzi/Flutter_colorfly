@@ -13,11 +13,15 @@ class PaintingAppBar extends StatefulWidget {
 
 class _PaintingAppBarState extends State<PaintingAppBar> {
   void onPressBack() {
-    Navigator.pop(context);
+    webviewKey.currentState.onPopClick();
   }
 
   onFinishClick() {
     webviewKey.currentState.onFinishClick();
+  }
+
+  onLockButtonClick() {
+    webviewKey.currentState.onLockClick();
   }
 
   @override
@@ -44,7 +48,9 @@ class _PaintingAppBarState extends State<PaintingAppBar> {
             Expanded(
                 flex: 1,
                 child: SingleToggleButton(
-                    onPress: (value) {},
+                    onPress: (value) {
+                      this.onLockButtonClick();
+                    },
                     sourceOn: ImgAssets.paintingContinue_black_on,
                     sourceOff: ImgAssets.paintingContinue_off)),
             FlatButton(

@@ -1060,6 +1060,8 @@ function cancelFill() {
 
 
 function loadRecord(recordStr) {
+    console.log('message' )
+    console.log()
     var records = JSON.parse(recordStr);
     for( var index in records){
 

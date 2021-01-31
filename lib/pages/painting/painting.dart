@@ -7,17 +7,23 @@ import 'package:flutter_colorfly/pages/painting/paintingAppBar.dart';
 import 'package:flutter_colorfly/pages/painting/painting_web.dart';
 
 class Painting extends StatefulWidget {
-  Painting({Key key}) : super(key: key);
+  final Map arguments;
+  Painting({Key key, this.arguments}) : super(key: key);
 
   @override
   _PaintingState createState() => _PaintingState();
 }
 
 class _PaintingState extends State<Painting> {
+  String paintId;
+  String svgId;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    print(widget.arguments);
+    paintId = widget.arguments['paintId'];
+    svgId = widget.arguments['svgId'];
   }
 
   @override
@@ -32,8 +38,7 @@ class _PaintingState extends State<Painting> {
             PaintingAppBar(),
             Expanded(
               child: PaintingWebView(
-                key: webviewKey,
-              ),
+                  key: webviewKey, paintId: paintId, svgId: svgId),
               flex: 1,
             ),
             ColorBar()

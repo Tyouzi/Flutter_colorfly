@@ -1,11 +1,20 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_colorfly/config/event_names.dart';
 import 'package:flutter_colorfly/config/routes.dart';
+import 'package:flutter_colorfly/config/share-preference-tags.dart';
 import 'package:flutter_colorfly/global.dart';
 import 'package:flutter_colorfly/pages/Creaction.dart';
+import 'package:flutter_colorfly/utils/DataBaseUtils.dart';
 import 'package:flutter_colorfly/utils/HexColor.dart';
 import 'package:flutter_colorfly/utils/sembast_db.dart';
 import 'package:flutter_colorfly/service/FetchClient.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+import 'config/gallery-tab.dart';
+import 'model/template_model.dart';
 import 'pages/Active.dart';
 import 'pages/HomePage.dart';
 import 'pages/Profile.dart';
@@ -21,11 +30,9 @@ class MyApp extends StatelessWidget {
     FetchClient.createInstance();
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      routes: Routes.configureRoutes(context),
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      // routes: Routes.configureRoutes(context),
       home: MyHomePage(title: 'Flutter Demo Home Page'),
+      builder: EasyLoading.init(),
     );
   }
 }
@@ -52,7 +59,46 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    SemDataBase.initDataBase();
+    initData();
+  }
+
+  initData() async {
+    await SemDataBase.initDataBase();
+    SharedPreferences sp = await SharedPreferences.getInstance();
+    int launchTimes = sp.getInt(SharePreferenceTags.launchTimes) ?? 0;
+    if (launchTimes == 0) {
+      await loadTemplateData();
+
+      bus.emit(EventNames.dbStatus);
+    }
+    sp.setInt(SharePreferenceTags.launchTimes, ++launchTimes);
+  }
+
+  customEasyLoading() {
+    EasyLoading.instance
+      ..indicatorType = EasyLoadingIndicatorType.fadingCircle
+      ..loadingStyle = EasyLoadingStyle.light
+      ..indicatorSize = 45.0
+      ..radius = 10.0
+      ..progressColor = Colors.yellow
+      ..backgroundColor = Colors.green
+      ..indicatorColor = Colors.yellow
+      ..textColor = Colors.yellow
+      ..maskColor = Colors.blue.withOpacity(0.5)
+      ..userInteractions = true
+      ..dismissOnTap = false;
+  }
+
+  loadTemplateData() async {
+    String value = await DefaultAssetBundle.of(context)
+        .loadString('builtin/templates1.json');
+
+    List templateList = JsonDecoder().convert(value.toString());
+
+    for (var i in templateList) {
+      TemplateModel tem = TemplateModel.fromJson(i);
+      await TemplateDataBase.saveTemplate(tem);
+    }
   }
 
   @override

@@ -32,6 +32,7 @@ dependencies:
   flutter_inappwebview: ^4.0.0+4
   path_provider: ^1.6.27
   sembast: ^2.4.8+1
+  flutter_easyloading: ^2.2.2
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -56,6 +57,7 @@ flutter:
     - builtin/
     - builtin/tintage/painting/
     - builtin/svg/
+    - builtin/thumb/
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
 

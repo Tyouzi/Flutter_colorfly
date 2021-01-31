@@ -4,8 +4,10 @@ import 'package:flutter_colorfly/pages/painting/painting.dart';
 class Routes {
   static String painting = '/painting';
 
-  static Map<String, WidgetBuilder> configureRoutes(BuildContext context) {
-    Map<String, WidgetBuilder> routes = {painting: (context) => Painting()};
+  static Map<String, Function> configureRoutes(BuildContext context) {
+    Map<String, Function> routes = {
+      painting: (context, {arguments}) => Painting()
+    };
     return routes;
   }
 }

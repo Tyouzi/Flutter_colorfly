@@ -7,3 +7,9 @@ var dio = Dio();
 
 final String themeColor = '#ed7c84';
 final EventBus bus = new EventBus();
+
+class Global {
+  static Future initGlobal() async {
+    SemDataBase.initDataBase();
+  }
+}
