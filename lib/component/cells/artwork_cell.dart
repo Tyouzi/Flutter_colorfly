@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -16,7 +18,7 @@ class ArtWorkCell extends StatelessWidget {
       child: FlatButton(
         padding: EdgeInsets.zero,
         child: Container(
-          child: Image.asset(url),
+          child: Image.file(File(url)),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
             color: Colors.white,

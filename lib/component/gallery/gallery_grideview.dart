@@ -116,6 +116,7 @@ class GalleryGrideState extends State<GalleryGride>
         List singleTemplateList = data[e] ?? [];
         return Container(
           color: Colors.grey[200],
+          // padding: EdgeInsets.only(top: 50),
           child: GridView.builder(
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2, mainAxisSpacing: 0, childAspectRatio: 1.1),

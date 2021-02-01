@@ -60,6 +60,12 @@ class _MyHomePageState extends State<MyHomePage> {
     // TODO: implement initState
     super.initState();
     initData();
+    bus.on(EventNames.changeBottomBar, (arg) {
+      _pageController.jumpToPage(3);
+      setState(() {
+        currentIndex = 3;
+      });
+    });
   }
 
   initData() async {
@@ -122,8 +128,8 @@ class _MyHomePageState extends State<MyHomePage> {
           BottomNavigationBarItem(
             icon: new Image.asset(
               currentIndex == 0
-                  ? 'images/tabbar/biretta@3x.png'
-                  : 'images/tabbar/acclimatising@3x.png',
+                  ? 'images/tabbar/biretta.png'
+                  : 'images/tabbar/acclimatising.png',
               width: 25,
               height: 25,
             ),
@@ -132,8 +138,8 @@ class _MyHomePageState extends State<MyHomePage> {
           BottomNavigationBarItem(
             icon: new Image.asset(
               currentIndex == 1
-                  ? 'images/tabbar/bulbul@3x.png'
-                  : 'images/tabbar/amylene@3x.png',
+                  ? 'images/tabbar/bulbul.png'
+                  : 'images/tabbar/amylene.png',
               width: 25,
               height: 25,
             ),
@@ -142,8 +148,8 @@ class _MyHomePageState extends State<MyHomePage> {
           BottomNavigationBarItem(
             icon: new Image.asset(
               currentIndex == 2
-                  ? 'images/tabbar/baldheads@3x.png'
-                  : 'images/tabbar/brushiest@3x.png',
+                  ? 'images/tabbar/baldheads.png'
+                  : 'images/tabbar/brushiest.png',
               width: 25,
               height: 25,
             ),
@@ -152,8 +158,8 @@ class _MyHomePageState extends State<MyHomePage> {
           // BottomNavigationBarItem(
           //   icon: new Image.asset(
           //     currentIndex == 3
-          //         ? 'images/tabbar/acidimetric@3x.png'
-          //         : 'images/tabbar/asseverates@3x.png',
+          //         ? 'images/tabbar/acidimetric.png'
+          //         : 'images/tabbar/asseverates.png',
           //     width: 25,
           //     height: 25,
           //   ),
@@ -162,8 +168,8 @@ class _MyHomePageState extends State<MyHomePage> {
           BottomNavigationBarItem(
             icon: new Image.asset(
               currentIndex == 3
-                  ? 'images/tabbar/applets@3x.png'
-                  : 'images/tabbar/biocomputing@3x.png',
+                  ? 'images/tabbar/applets.png'
+                  : 'images/tabbar/biocomputing.png',
               width: 25,
               height: 25,
             ),

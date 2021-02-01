@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_colorfly/component/profile/artwork_list.dart';
+import 'package:flutter_colorfly/component/profile/published_list.dart';
 import 'package:flutter_colorfly/global.dart';
 import 'package:flutter_colorfly/utils/HexColor.dart';
 
@@ -57,7 +58,7 @@ class _ProfileTabBarState extends State<ProfileTabBar>
             flex: 1,
             child: TabBarView(
               controller: tabController,
-              children: [ArtWorkList(), ArtWorkList()],
+              children: [ArtWorkList(), PublishedList()],
             ))
       ]),
     );

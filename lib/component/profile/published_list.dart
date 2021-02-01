@@ -11,7 +11,9 @@ class _PublishedListState extends State<PublishedList> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Container(),
+      child: Center(
+        child: Text('发布模块敬请期待'),
+      ),
     );
   }
 }

@@ -33,6 +33,7 @@ class _PaintingWebViewState extends State<PaintingWebView> {
   String filePath = 'builtin/tintage/painting/index.html';
   InAppWebViewController webView;
   int popStatus = 0;
+  bool paintLock = false;
   @override
   void initState() {
     // TODO: implement initState
@@ -86,6 +87,12 @@ class _PaintingWebViewState extends State<PaintingWebView> {
 
   onLockClick() {
     this._sendMsgToWebView('lock');
+    if (!paintLock) {
+      EasyLoading.showToast('连续涂色开启');
+    } else {
+      EasyLoading.showToast('连续涂色关闭');
+    }
+    paintLock = !paintLock;
   }
 
   void onSwitchColor(String color) {
@@ -125,12 +132,13 @@ class _PaintingWebViewState extends State<PaintingWebView> {
     await PaintDataBase.updatePaint(widget.svgId, widget.paintId, imgPath);
     await TemplateDataBase.updateTemplate(widget.svgId, imgPath);
 
-    if (popStatus == 0) {
-      EasyLoading.dismiss();
-      bus.emit(EventNames.cellPathUpdate,
-          {"svgId": widget.svgId, "thumbUrl": imgPath});
-      Navigator.pop(context);
+    if (popStatus == 1) {
+      bus.emit(EventNames.changeBottomBar);
     }
+    EasyLoading.dismiss();
+    bus.emit(EventNames.cellPathUpdate,
+        {"svgId": widget.svgId, "thumbUrl": imgPath});
+    Navigator.pop(context);
   }
 
   void addWebListener() {

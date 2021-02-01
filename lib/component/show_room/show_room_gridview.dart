@@ -4,8 +4,10 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_colorfly/component/cells/show_room_cell.dart';
+import 'package:flutter_colorfly/pages/showroom/showroom_detail.dart';
 import 'package:flutter_colorfly/service/FetchClient.dart';
 import 'package:flutter_colorfly/service/ShowRoomRequest.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 class ShowRoomGridView extends StatefulWidget {
   String title;
@@ -27,6 +29,7 @@ class _ShowRoomGridViewState extends State<ShowRoomGridView>
   void dispose() {
     // TODO: implement dispose
     super.dispose();
+
     _scrollController.dispose();
   }
 
@@ -35,6 +38,7 @@ class _ShowRoomGridViewState extends State<ShowRoomGridView>
     // TODO: implement initState
     super.initState();
     print(title);
+    EasyLoading.show();
     if (title == '发现') {
       ShowRoomRequest.getAllPaintings().then((response) {
         print(response);
@@ -42,6 +46,7 @@ class _ShowRoomGridViewState extends State<ShowRoomGridView>
           setState(() {
             dataImg = response.data['data'];
           });
+          EasyLoading.dismiss();
         }
       });
     } else if (title == '热门') {
@@ -52,6 +57,7 @@ class _ShowRoomGridViewState extends State<ShowRoomGridView>
           setState(() {
             dataImg = response.data['data'];
           });
+          EasyLoading.dismiss();
         });
       });
     }
@@ -87,7 +93,6 @@ class _ShowRoomGridViewState extends State<ShowRoomGridView>
           setState(() {
             dataImg.addAll(response.data['data']);
           });
-          print(dataImg.length);
           is_loading = false;
         });
       });
@@ -102,16 +107,22 @@ class _ShowRoomGridViewState extends State<ShowRoomGridView>
 
       List newData = response.data['data'];
 
-      print(newData[0]['id']);
-      print(newData[newData.length - 1]['id']);
       int lengthNew = newData[0]['id'] - _targetId;
       newData.sublist(lengthNew).addAll(dataImg);
-      print(newData.length);
       setState(() {
         dataImg = newData;
       });
       return response;
     }
+  }
+
+  onCellPress(int index) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (BuildContext context) => ShowRoomDetail(
+                  data: dataImg[index],
+                )));
   }
 
   @override
@@ -129,7 +140,13 @@ class _ShowRoomGridViewState extends State<ShowRoomGridView>
               crossAxisSpacing: 5),
           itemCount: dataImg.length,
           itemBuilder: (context, index) {
-            return ShowRoomCell(dataImg[index]['url'], index);
+            return ShowRoomCell(
+              dataImg[index]['url'],
+              index,
+              onPress: (index) {
+                this.onCellPress(index);
+              },
+            );
           }),
     ));
   }

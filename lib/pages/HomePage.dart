@@ -4,6 +4,7 @@ import 'dart:ffi';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_colorfly/component/gallery/gallery_grideview.dart';
+import 'package:flutter_colorfly/component/gallery/sliverPersistentTabBar.dart';
 import 'package:flutter_colorfly/config/gallery-tab.dart';
 import 'package:flutter_colorfly/service/GalleryRequest.dart';
 import 'package:flutter_colorfly/service/UserRequest.dart';
@@ -24,10 +25,12 @@ class HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   TabController tabController;
   int currentIndex = 0;
-  List<Widget> swiperItems = <Widget>[
-    Icon(Icons.adb),
-    Icon(Icons.add_box),
-    Icon(Icons.wrap_text)
+
+  List<String> swipButtonUrls = [
+    'images/tabbar/alkalies.jpg',
+    'images/tabbar/arblast.jpg',
+    'images/tabbar/brassards.jpg',
+    'images/tabbar/carcinomatoses.png'
   ];
   @override
   void initState() {
@@ -43,49 +46,62 @@ class HomePageState extends State<HomePage>
     });
   }
 
-  @override
-  Widget build(BuildContext context) {
-    // TODO: implement build
+  List<Widget> renderHeader() {
     var screenSize = MediaQuery.of(context).size;
     var width = screenSize.width;
     var height = screenSize.height;
-    return new SafeArea(
-        child: new Container(
-            child: Column(
-      children: <Widget>[
-        Container(
-          width: width,
-          height: height / 4.5,
-          color: Colors.cyan,
-          child: new Swiper(
-            itemCount: 3,
-            autoplay: true,
-            autoplayDelay: 2000,
-            itemBuilder: (BuildContext context, int index) {
-              return swiperItems[index];
-            },
-            pagination: new SwiperPagination(),
-          ),
+    return [
+      SliverAppBar(
+        expandedHeight: height / 4.5,
+        flexibleSpace: Swiper(
+          itemCount: 4,
+          autoplay: true,
+          autoplayDelay: 5000,
+          itemBuilder: (BuildContext context, int index) {
+            return Container(
+              child: Image.asset(swipButtonUrls[index], fit: BoxFit.cover),
+              width: width,
+              height: height / 4.5,
+            );
+          },
+          pagination: SwiperPagination(),
         ),
-        TabBar(
-            controller: tabController,
-            isScrollable: true,
-            unselectedLabelColor: Colors.grey,
-            labelColor: HexColor(themeColor),
-            indicatorColor: HexColor(themeColor),
-            tabs: GalleryTabNames.tabNames
-                .map((e) => Tab(
-                        child: Text(
-                      e,
-                      style: TextStyle(fontSize: 20),
-                    )))
-                .toList()),
-        Expanded(
-          flex: 1,
-          child: GalleryGride(tabController: tabController),
-        )
-      ],
-    )));
+      ),
+      SliverPersistentHeader(
+          pinned: true,
+          delegate: SliverPersistentTabBar(
+              child: TabBar(
+                  controller: tabController,
+                  isScrollable: true,
+                  unselectedLabelColor: Colors.grey,
+                  labelColor: HexColor(themeColor),
+                  indicatorColor: HexColor(themeColor),
+                  tabs: GalleryTabNames.tabNames
+                      .map((e) => Tab(
+                              child: Text(
+                            e,
+                            style: TextStyle(fontSize: 20),
+                          )))
+                      .toList())))
+    ];
+  }
+
+  Widget renderBody() {
+    return GalleryGride(tabController: tabController);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+
+    return new SafeArea(
+      child: NestedScrollView(
+        headerSliverBuilder: (BuildContext context, bool isscrolled) {
+          return renderHeader();
+        },
+        body: renderBody(),
+      ),
+    );
   }
 
   @override
