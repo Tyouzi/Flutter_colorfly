@@ -4,10 +4,13 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_colorfly/component/cells/show_room_cell.dart';
+import 'package:flutter_colorfly/global.dart';
 import 'package:flutter_colorfly/pages/showroom/showroom_detail.dart';
 import 'package:flutter_colorfly/service/FetchClient.dart';
 import 'package:flutter_colorfly/service/ShowRoomRequest.dart';
+import 'package:flutter_colorfly/utils/HexColor.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class ShowRoomGridView extends StatefulWidget {
   String title;
@@ -25,6 +28,7 @@ class _ShowRoomGridViewState extends State<ShowRoomGridView>
   _ShowRoomGridViewState(this.title);
   bool is_loading = false;
   String previousDate = '';
+  bool loading = true;
   @override
   void dispose() {
     // TODO: implement dispose
@@ -37,16 +41,15 @@ class _ShowRoomGridViewState extends State<ShowRoomGridView>
   void initState() {
     // TODO: implement initState
     super.initState();
-    print(title);
-    EasyLoading.show();
+
     if (title == '发现') {
       ShowRoomRequest.getAllPaintings().then((response) {
         print(response);
         if (response.data != null) {
           setState(() {
             dataImg = response.data['data'];
+            loading = false;
           });
-          EasyLoading.dismiss();
         }
       });
     } else if (title == '热门') {
@@ -56,6 +59,7 @@ class _ShowRoomGridViewState extends State<ShowRoomGridView>
         ShowRoomRequest.getHotPaintings(hotListId).then((response) {
           setState(() {
             dataImg = response.data['data'];
+            loading = false;
           });
           EasyLoading.dismiss();
         });
@@ -127,6 +131,9 @@ class _ShowRoomGridViewState extends State<ShowRoomGridView>
 
   @override
   Widget build(BuildContext context) {
+    if (loading) {
+      return SpinKitRing(color: HexColor(themeColor));
+    }
     return Container(
         child: RefreshIndicator(
       onRefresh: this.onListRefresh,

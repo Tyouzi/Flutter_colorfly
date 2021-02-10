@@ -82,10 +82,11 @@ class _MyHomePageState extends State<MyHomePage> {
 
   customEasyLoading() {
     EasyLoading.instance
-      ..indicatorType = EasyLoadingIndicatorType.fadingCircle
+      ..indicatorType = EasyLoadingIndicatorType.ring
       ..loadingStyle = EasyLoadingStyle.light
       ..indicatorSize = 45.0
       ..radius = 10.0
+      ..maskType = EasyLoadingMaskType.custom
       ..progressColor = Colors.yellow
       ..backgroundColor = Colors.green
       ..indicatorColor = Colors.yellow

@@ -49,9 +49,10 @@ class _SingleToggleButtonState extends State<SingleToggleButton> {
   @override
   Widget build(BuildContext context) {
     return FlatButton(
-        highlightColor: Colors.transparent,
-        splashColor: Colors.transparent,
-        onPressed: this.onPress,
-        child: imgShow());
+      highlightColor: Colors.transparent,
+      splashColor: Colors.transparent,
+      onPressed: this.onPress,
+      child: imgShow(),
+    );
   }
 }

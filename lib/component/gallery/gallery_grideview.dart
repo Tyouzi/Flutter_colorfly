@@ -11,6 +11,7 @@ import 'package:flutter_colorfly/model/template_model.dart';
 import 'package:flutter_colorfly/pages/painting/painting.dart';
 import 'package:flutter_colorfly/service/GalleryRequest.dart';
 import 'package:flutter_colorfly/utils/DataBaseUtils.dart';
+import 'package:flutter_colorfly/utils/DialogPageRoute.dart';
 import 'package:flutter_colorfly/utils/paintHandler.dart';
 import 'package:sembast/sembast.dart';
 
@@ -88,20 +89,22 @@ class GalleryGrideState extends State<GalleryGride>
       RecordSnapshot lastRecord = records[records.length - 1];
       String paintId = lastRecord['paintId'];
       String thumbnailUrl = lastRecord['paintPath'];
-      showDialog(
-          context: context,
-          barrierDismissible: false,
-          builder: (context) => GalleryDialog(
-                imgSrc: thumbnailUrl,
-                onNewPress: () {
-                  Navigator.pop(context);
-                  PaintHandler.createNewPaint(context, svgId);
-                },
-                continuePress: () {
-                  Navigator.pop(context);
-                  PaintHandler.continuePress(context, paintId, svgId);
-                },
-              ));
+      Navigator.push(
+          context,
+          HeroDialogRoute(
+            builder: (context) => GalleryDialog(
+              svgId: svgId,
+              imgSrc: thumbnailUrl,
+              onNewPress: () {
+                Navigator.pop(context);
+                PaintHandler.createNewPaint(context, svgId);
+              },
+              continuePress: () {
+                Navigator.pop(context);
+                PaintHandler.continuePress(context, paintId, svgId);
+              },
+            ),
+          ));
     } else {
       PaintHandler.createNewPaint(context, svgId);
     }

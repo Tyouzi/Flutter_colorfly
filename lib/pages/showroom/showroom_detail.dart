@@ -67,11 +67,13 @@ class _ShowRoomDetailState extends State<ShowRoomDetail> {
                     ],
                   ),
                 ),
-                Container(
-                  width: width,
-                  height: width,
-                  child: Image.network(imgUrl),
-                )
+                Hero(
+                    tag: widget.data['url'],
+                    child: Container(
+                      width: width,
+                      height: width,
+                      child: Image.network(imgUrl),
+                    ))
               ],
             )
           ],

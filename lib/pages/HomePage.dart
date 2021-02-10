@@ -60,6 +60,7 @@ class HomePageState extends State<HomePage>
           itemBuilder: (BuildContext context, int index) {
             return Container(
               child: Image.asset(swipButtonUrls[index], fit: BoxFit.cover),
+              color: Colors.grey,
               width: width,
               height: height / 4.5,
             );

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_colorfly/component/cells/artwork_cell.dart';
 import 'package:flutter_colorfly/config/event_names.dart';
 import 'package:flutter_colorfly/utils/DataBaseUtils.dart';
+import 'package:flutter_colorfly/utils/DialogPageRoute.dart';
 import 'package:flutter_colorfly/utils/PaintHandler.dart';
 import 'package:sembast/sembast.dart';
 
@@ -20,6 +21,7 @@ class _ArtWorkListState extends State<ArtWorkList> {
   List<RecordSnapshot> records = [];
   Widget itemBuilder(BuildContext context, int index) {
     return ArtWorkCell(
+        paintId: records[index]['paintId'],
         onPress: (index) {
           String url = records[index]['paintPath'];
           String svgId = records[index]['svgId'];
@@ -31,36 +33,37 @@ class _ArtWorkListState extends State<ArtWorkList> {
   }
 
   onItemPress(String url, String svgId, String paintId) {
-    showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (context) => GalleryDialog(
-              imgSrc: url,
-              type: 'profile',
-              onNewPress: () {
-                Navigator.pop(context);
-                PaintHandler.createNewPaint(context, svgId);
-              },
-              continuePress: () {
-                Navigator.pop(context);
-                PaintHandler.continuePress(context, paintId, svgId);
-              },
-              onDeletePress: () async {
-                int totalNum = 0;
-                for (RecordSnapshot record in records) {
-                  if (record['svgId'] == svgId) {
-                    totalNum++;
-                  }
-                }
-                print(totalNum);
-                if (totalNum == 1) {
-                  await TemplateDataBase.updateTemplate(svgId, '/static');
-                }
-                await PaintHandler.deletePaint(svgId, paintId);
-                Navigator.pop(context);
-                await initData();
-              },
-            ));
+    Navigator.push(
+        context,
+        HeroDialogRoute(
+            builder: (context) => GalleryDialog(
+                  svgId: paintId,
+                  imgSrc: url,
+                  type: 'profile',
+                  onNewPress: () {
+                    Navigator.pop(context);
+                    PaintHandler.createNewPaint(context, svgId);
+                  },
+                  continuePress: () {
+                    Navigator.pop(context);
+                    PaintHandler.continuePress(context, paintId, svgId);
+                  },
+                  onDeletePress: () async {
+                    int totalNum = 0;
+                    for (RecordSnapshot record in records) {
+                      if (record['svgId'] == svgId) {
+                        totalNum++;
+                      }
+                    }
+                    print(totalNum);
+                    if (totalNum == 1) {
+                      await TemplateDataBase.updateTemplate(svgId, '/static');
+                    }
+                    await PaintHandler.deletePaint(svgId, paintId);
+                    Navigator.pop(context);
+                    await initData();
+                  },
+                )));
   }
 
   @override

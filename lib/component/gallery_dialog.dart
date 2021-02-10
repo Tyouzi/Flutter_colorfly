@@ -2,12 +2,14 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_colorfly/utils/HexColor.dart';
 
 class GalleryDialog extends StatelessWidget {
   String imgSrc;
   Function continuePress;
   Function onNewPress;
   Function onDeletePress;
+  String svgId;
   String type = 'gallery';
   GalleryDialog(
       {Key key,
@@ -15,7 +17,8 @@ class GalleryDialog extends StatelessWidget {
       this.continuePress,
       this.onNewPress,
       this.type,
-      this.onDeletePress})
+      this.onDeletePress,
+      this.svgId})
       : super(key: key);
 
   Widget renderDeleteButton() {
@@ -49,7 +52,8 @@ class GalleryDialog extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
     double width = size.width;
     double height = size.height;
-    return Container(
+    return SafeArea(
+        child: Container(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -65,19 +69,22 @@ class GalleryDialog extends StatelessWidget {
                 child: Image.asset('images/painting/bondages.png'),
                 padding: EdgeInsets.only(left: 12, top: 15),
               )),
-          Container(
-            width: width,
-            height: width * 0.7,
-            margin: EdgeInsets.only(
-                left: width * 0.15,
-                right: width * 0.15,
-                top: height * 0.1,
-                bottom: 20),
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(10)),
-                color: Colors.white,
-                image: DecorationImage(image: FileImage(File(this.imgSrc)))),
-          ),
+          Hero(
+              tag: svgId,
+              child: Container(
+                width: width,
+                height: width * 0.7,
+                margin: EdgeInsets.only(
+                    left: width * 0.15,
+                    right: width * 0.15,
+                    top: height * 0.1,
+                    bottom: 20),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                    color: Colors.transparent,
+                    image:
+                        DecorationImage(image: FileImage(File(this.imgSrc)))),
+              )),
           Container(
             width: width * 0.7,
             padding: EdgeInsets.only(left: 15),
@@ -137,6 +144,6 @@ class GalleryDialog extends StatelessWidget {
           )
         ],
       ),
-    );
+    ));
   }
 }

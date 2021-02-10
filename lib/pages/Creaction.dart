@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_colorfly/global.dart';
+import 'package:flutter_colorfly/pages/AnimationTest.dart';
 import 'package:flutter_colorfly/utils/HexColor.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
@@ -14,7 +15,9 @@ class Creaction extends StatefulWidget {
 
 class CreationState extends State<Creaction> {
   onPressCamera() {
-    EasyLoading.showToast('敬请期待');
+    // EasyLoading.showToast('敬请期待');
+    Navigator.push(
+        context, MaterialPageRoute(builder: (builder) => AnimationTest()));
   }
 
   onPressAlbum() {

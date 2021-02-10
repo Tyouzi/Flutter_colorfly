@@ -10,8 +10,8 @@
     <uses-permission android:name="android.permission.BLUETOOTH"></uses-permission>
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="flutter_colorfly"
-        android:icon="@mipmap/ic_launcher">
+        android:label="Flutter Colorfly"
+        android:icon="@drawable/ic_launcher">
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

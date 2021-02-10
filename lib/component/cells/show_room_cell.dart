@@ -22,21 +22,18 @@ class _ShowRoomCellState extends State<ShowRoomCell> {
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
-    print('changeDependencies ${index}');
   }
 
   @override
   void deactivate() {
     // TODO: implement deactivate
     super.deactivate();
-    print('deactivate ${index}');
   }
 
   @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
-    print('dispose ${index}');
   }
 
   @override
@@ -45,12 +42,21 @@ class _ShowRoomCellState extends State<ShowRoomCell> {
       color: Colors.white,
       padding: EdgeInsets.all(3),
       child: FlatButton(
-        padding: EdgeInsets.zero,
-        onPressed: () {
-          this.onPress(index);
-        },
-        child: Image.network(FetchClient.ImgHost + url),
-      ),
+          padding: EdgeInsets.zero,
+          onPressed: () {
+            this.onPress(index);
+          },
+          child: Hero(
+            tag: url,
+            child: Image.network(
+              FetchClient.ImgHost + url,
+              errorBuilder: (context, error, stackTrace) {
+                return Container(
+                  child: Text('出错了！'),
+                );
+              },
+            ),
+          )),
     );
   }
 }

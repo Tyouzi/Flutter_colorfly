@@ -69,25 +69,26 @@ class GalleryCellsState extends State {
     // TODO: implement build
     // print(template.);
     return Container(
-      padding: EdgeInsets.all(5),
-      margin: EdgeInsets.only(top: 0),
-      child: AspectRatio(
-          aspectRatio: 1,
-          child: FlatButton(
-            onPressed: () {
-              this.onPress(template.id);
-            },
-            padding: EdgeInsets.all(0),
-            child: Container(
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  color: Colors.grey[50],
-                  image: DecorationImage(
-                    image: getImg(),
-                    fit: BoxFit.fill,
-                  )),
-            ),
-          )),
-    );
+        padding: EdgeInsets.all(5),
+        margin: EdgeInsets.only(top: 0),
+        child: Hero(
+            tag: template.id,
+            child: AspectRatio(
+                aspectRatio: 1,
+                child: FlatButton(
+                  onPressed: () {
+                    this.onPress(template.id);
+                  },
+                  padding: EdgeInsets.all(0),
+                  child: Container(
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12),
+                        color: Colors.grey[50],
+                        image: DecorationImage(
+                          image: getImg(),
+                          fit: BoxFit.fill,
+                        )),
+                  ),
+                ))));
   }
 }
