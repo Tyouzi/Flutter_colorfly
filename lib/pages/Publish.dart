@@ -20,7 +20,6 @@ class Publish extends StatelessWidget {
   }
   onTapFinish(BuildContext buildContext) {
     bus.emit(EventNames.changeBottomBar, 3);
-    bus.emit(EventNames.cellPathUpdate, {"svgId": svgId, "thumbUrl": imgPath});
     Navigator.of(buildContext).popUntil((route) => route.isFirst);
   }
 

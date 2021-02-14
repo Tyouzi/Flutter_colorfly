@@ -19,7 +19,7 @@ class _AnimationTestState extends State<AnimationTest>
     super.initState();
     controller = new AnimationController(
         duration: Duration(milliseconds: 1500), vsync: this);
-    animation = Tween(begin: 0.0, end: 100.0).animate(controller);
+    animation = Tween(begin: -50.0, end: 50.0).animate(controller);
     // animation = CurvedAnimation(parent: controller, curve: Curves.easeIn);
     controller.forward();
   }
@@ -38,25 +38,32 @@ class _AnimationTestState extends State<AnimationTest>
       appBar: AppBar(
         title: Text("动画测试"),
       ),
-      body: Column(
+      body: Container(
+          child: Stack(
         children: [
-          AnimatedBuilder(
-              animation: animation,
-              child: Container(
-                color: Colors.amber,
-              ),
-              builder: (context, child) {
-                return Container(
-                  width: animation.value,
-                  height: animation.value,
-                  child: child,
-                );
-              }),
-          StaggerAnimation(
-            controller: controller,
+          // StaggerAnimation(
+          //   controller: controller,
+          // ),
+          Positioned(
+            child: AnimatedBuilder(
+                animation: animation,
+                child: Container(
+                  color: Colors.amber,
+                ),
+                builder: (context, child) {
+                  return Transform.translate(
+                    offset: Offset(0, animation.value),
+                    child: Container(
+                      width: 50,
+                      height: 50,
+                      child: child,
+                    ),
+                  );
+                }),
+            // top: animation.value,
           )
         ],
-      ),
+      )),
     ));
   }
 }

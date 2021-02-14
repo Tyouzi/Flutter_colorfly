@@ -101,7 +101,8 @@ class GalleryGrideState extends State<GalleryGride>
               },
               continuePress: () {
                 Navigator.pop(context);
-                PaintHandler.continuePress(context, paintId, svgId);
+                PaintHandler.continuePress(
+                    context, paintId, svgId, thumbnailUrl);
               },
             ),
           ));
@@ -127,7 +128,7 @@ class GalleryGrideState extends State<GalleryGride>
               itemBuilder: (context, index) {
                 return GalleryCells(
                     tem: singleTemplateList[index],
-                    onPress: (svgId) {
+                    onPress: (String svgId, String imgPath) {
                       onPress(svgId);
                     });
               }),

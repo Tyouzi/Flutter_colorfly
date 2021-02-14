@@ -24,8 +24,11 @@ GlobalKey<_PaintingWebViewState> webviewKey = GlobalKey();
 class PaintingWebView extends StatefulWidget {
   String paintId;
   String svgId;
-
-  PaintingWebView({Key key, this.paintId, this.svgId}) : super(key: key);
+  String imgPath;
+  Function onloadEnded;
+  PaintingWebView(
+      {Key key, this.paintId, this.svgId, this.imgPath, this.onloadEnded})
+      : super(key: key);
 
   @override
   _PaintingWebViewState createState() => _PaintingWebViewState();
@@ -152,7 +155,8 @@ class _PaintingWebViewState extends State<PaintingWebView> {
     await PaintDataBase.updatePaint(widget.svgId, widget.paintId, imgPath);
     await TemplateDataBase.updateTemplate(widget.svgId, imgPath);
     EasyLoading.dismiss();
-
+    bus.emit(EventNames.cellPathUpdate,
+        {"svgId": widget.svgId, "thumbUrl": imgPath});
     if (popStatus == 1) {
       Navigator.push(
           context,
@@ -206,12 +210,12 @@ class _PaintingWebViewState extends State<PaintingWebView> {
           }
           if (message == 'window_onload') {
             _loadRecords();
+            widget.onloadEnded();
           }
         });
   }
 
   _updateSteps(String msg) async {
-    print('press message ' + msg);
     var step = JsonDecoder().convert(msg);
     String pathId = step['pathId'];
     String fillColor = step['fillColor'];

@@ -46,7 +46,7 @@ class _ArtWorkListState extends State<ArtWorkList> {
                   },
                   continuePress: () {
                     Navigator.pop(context);
-                    PaintHandler.continuePress(context, paintId, svgId);
+                    PaintHandler.continuePress(context, paintId, svgId, url);
                   },
                   onDeletePress: () async {
                     int totalNum = 0;
@@ -55,7 +55,6 @@ class _ArtWorkListState extends State<ArtWorkList> {
                         totalNum++;
                       }
                     }
-                    print(totalNum);
                     if (totalNum == 1) {
                       await TemplateDataBase.updateTemplate(svgId, '/static');
                     }

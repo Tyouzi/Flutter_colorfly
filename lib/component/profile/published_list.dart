@@ -92,7 +92,6 @@ class _PublishedListState extends State<PublishedList>
     Response response = await UserRequest.getMyPaintings(page);
     List userPaintings = response.data['data'];
     hasMore = userPaintings.length == 24;
-    print(hasMore);
     setState(() {
       paintData.addAll(userPaintings);
     });
@@ -102,6 +101,13 @@ class _PublishedListState extends State<PublishedList>
   Widget build(BuildContext context) {
     if (isLoading) {
       return LoadingPlaceHolder();
+    }
+    if (paintData.length == 0) {
+      return Container(
+        child: Center(
+          child: Text('您还没有发布过内容'),
+        ),
+      );
     }
     print(paintData.length);
     return Container(

@@ -49,7 +49,6 @@ class _ProfileHeaderState extends State<ProfileHeader>
 
   Future requstUserInfo() async {
     Response response = await UserRequest.getUserInfo();
-    print(response.data);
     this.setState(() {
       userName = response.data['username'] ?? '';
       int likes = response.data['counts']['likes'] ?? 0;

@@ -8,11 +8,6 @@ import 'package:flutter_colorfly/config/event_names.dart';
 import 'package:flutter_colorfly/config/routes.dart';
 import 'package:flutter_colorfly/global.dart';
 import 'package:flutter_colorfly/model/template_model.dart';
-import 'package:flutter_colorfly/pages/painting/painting.dart';
-
-import 'package:flutter_colorfly/service/FetchClient.dart';
-import 'package:flutter_colorfly/utils/DataBaseUtils.dart';
-import 'package:sembast/sembast.dart';
 
 class GalleryCells extends StatefulWidget {
   final TemplateModel tem;
@@ -31,13 +26,22 @@ class GalleryCellsState extends State {
   GalleryCellsState(this.template, this.onPress);
   String imgPath;
   ImageProvider getImg() {
+    String path = getImgPath();
+    if (path.startsWith('builtin')) {
+      return AssetImage(path);
+    } else {
+      return FileImage(File(path));
+    }
+  }
+
+  String getImgPath() {
     if (imgPath != null) {
-      return FileImage(File(imgPath));
+      return imgPath;
     }
     if (!template.thumbnailUrl.startsWith('/static')) {
-      return FileImage(File(template.thumbnailUrl));
+      return template.thumbnailUrl;
     } else {
-      return AssetImage('builtin/thumb/${template.id}.png');
+      return 'builtin/thumb/${template.id}.png';
     }
   }
 
@@ -78,7 +82,7 @@ class GalleryCellsState extends State {
                 aspectRatio: 1,
                 child: CustomButton(
                   onTap: () {
-                    this.onPress(template.id);
+                    this.onPress(template.id, getImgPath());
                   },
                   child: Container(
                     decoration: BoxDecoration(

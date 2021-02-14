@@ -20,7 +20,6 @@ class ArtWorkCell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(this.paintId);
     return Hero(
         tag: paintId,
         child: Container(

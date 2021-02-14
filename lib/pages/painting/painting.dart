@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_colorfly/component/singleToggleButton.dart';
@@ -17,13 +19,42 @@ class Painting extends StatefulWidget {
 class _PaintingState extends State<Painting> {
   String paintId;
   String svgId;
+  String imgPath;
+  bool loadEnded = false;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    print(widget.arguments);
     paintId = widget.arguments['paintId'];
     svgId = widget.arguments['svgId'];
+    imgPath = widget.arguments['imgPath'];
+  }
+
+  Widget createPlaceHolder() {
+    if (loadEnded) {
+      return Container();
+    }
+    if (imgPath.startsWith('builtin')) {
+      return Hero(
+          tag: svgId,
+          child: Container(
+            margin: EdgeInsets.only(top: 30),
+            child: Image.asset(imgPath),
+          ));
+    } else {
+      return Hero(
+          tag: svgId,
+          child: Container(
+            margin: EdgeInsets.only(top: 30),
+            child: Image.file(File(imgPath)),
+          ));
+    }
+  }
+
+  onLoadEnded() {
+    setState(() {
+      loadEnded = true;
+    });
   }
 
   @override
@@ -37,8 +68,20 @@ class _PaintingState extends State<Painting> {
           children: [
             PaintingAppBar(),
             Expanded(
-              child: PaintingWebView(
-                  key: webviewKey, paintId: paintId, svgId: svgId),
+              child: Stack(
+                children: [
+                  PaintingWebView(
+                    key: webviewKey,
+                    paintId: paintId,
+                    svgId: svgId,
+                    imgPath: imgPath,
+                    onloadEnded: () {
+                      onLoadEnded();
+                    },
+                  ),
+                  createPlaceHolder()
+                ],
+              ),
               flex: 1,
             ),
             ColorBar()
