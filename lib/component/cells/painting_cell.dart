@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_colorfly/component/customButton.dart';
 import 'package:flutter_colorfly/config/event_names.dart';
 import 'package:flutter_colorfly/global.dart';
 
@@ -42,12 +43,8 @@ class _ColorCellState extends State<ColorCell> {
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width * 0.11;
-    return FlatButton(
-        onPressed: onPressed,
-        padding: EdgeInsets.all(0),
-        minWidth: 0,
-        highlightColor: Colors.transparent,
-        splashColor: Colors.transparent,
+    return CustomButton(
+        onTap: onPressed,
         child: Container(
           width: width,
           height: width,
@@ -72,7 +69,6 @@ class _ColorCellState extends State<ColorCell> {
 
   void onPressed() {
     if (isSelected) return;
-    print(widget._color.toString());
     bus.emit(EventNames.colorCell, widget._color.toString());
     // print(_color.value);
   }

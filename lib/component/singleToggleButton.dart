@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_colorfly/component/customButton.dart';
 
 class SingleToggleButton extends StatefulWidget {
   bool initState = false;
@@ -48,10 +49,8 @@ class _SingleToggleButtonState extends State<SingleToggleButton> {
 
   @override
   Widget build(BuildContext context) {
-    return FlatButton(
-      highlightColor: Colors.transparent,
-      splashColor: Colors.transparent,
-      onPressed: this.onPress,
+    return CustomButton(
+      onTap: this.onPress,
       child: imgShow(),
     );
   }

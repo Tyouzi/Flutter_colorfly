@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_colorfly/component/customButton.dart';
 import 'package:flutter_colorfly/utils/HexColor.dart';
 
 class GalleryDialog extends StatelessWidget {
@@ -23,10 +24,8 @@ class GalleryDialog extends StatelessWidget {
 
   Widget renderDeleteButton() {
     if (this.type == 'profile')
-      return FlatButton(
-        highlightColor: Colors.transparent,
-        splashColor: Colors.transparent,
-        onPressed: this.onDeletePress,
+      return CustomButton(
+        onTap: this.onDeletePress,
         child: Row(
           children: [
             Container(
@@ -57,13 +56,10 @@ class GalleryDialog extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          FlatButton(
-              highlightColor: Colors.transparent,
-              splashColor: Colors.transparent,
-              onPressed: () {
+          CustomButton(
+              onTap: () {
                 Navigator.pop(context);
               },
-              padding: EdgeInsets.zero,
               child: Container(
                 alignment: Alignment.centerLeft,
                 child: Image.asset('images/painting/bondages.png'),
@@ -92,10 +88,10 @@ class GalleryDialog extends StatelessWidget {
                 color: Colors.white, borderRadius: BorderRadius.circular(10)),
             child: Column(
               children: [
-                FlatButton(
-                  highlightColor: Colors.transparent,
-                  splashColor: Colors.transparent,
-                  onPressed: this.onNewPress,
+                CustomButton(
+                  onTap: () {
+                    this.onNewPress();
+                  },
                   child: Row(
                     children: [
                       Container(
@@ -114,10 +110,10 @@ class GalleryDialog extends StatelessWidget {
                   ),
                   height: 65,
                 ),
-                FlatButton(
-                  highlightColor: Colors.transparent,
-                  splashColor: Colors.transparent,
-                  onPressed: this.continuePress,
+                CustomButton(
+                  onTap: () {
+                    this.continuePress();
+                  },
                   child: Row(
                     children: [
                       Container(

@@ -30,15 +30,12 @@ class _PaintingAppBarState extends State<PaintingAppBar> {
       child: Container(
         color: Colors.white,
         height: 50,
-        // padding: EdgeInsets.only(left: 0, right: 5),
+        padding: EdgeInsets.only(left: 15, right: 15),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            FlatButton(
-                onPressed: this.onPressBack,
-                highlightColor: Colors.transparent,
-                splashColor: Colors.transparent,
-                minWidth: 0,
+            GestureDetector(
+                onTap: this.onPressBack,
                 child: Image(
                     width: 25,
                     height: 25,
@@ -47,17 +44,17 @@ class _PaintingAppBarState extends State<PaintingAppBar> {
                     ))),
             Expanded(
                 flex: 1,
-                child: SingleToggleButton(
-                    onPress: (value) {
-                      this.onLockButtonClick();
-                    },
-                    sourceOn: ImgAssets.paintingContinue_black_on,
-                    sourceOff: ImgAssets.paintingContinue_off)),
-            FlatButton(
-                onPressed: this.onFinishClick,
-                highlightColor: Colors.transparent,
-                splashColor: Colors.transparent,
-                minWidth: 0,
+                child: Container(
+                  alignment: Alignment.center,
+                  child: SingleToggleButton(
+                      onPress: (value) {
+                        this.onLockButtonClick();
+                      },
+                      sourceOn: ImgAssets.paintingContinue_black_on,
+                      sourceOff: ImgAssets.paintingContinue_off),
+                )),
+            GestureDetector(
+                onTap: this.onFinishClick,
                 child: Image(
                     width: 25,
                     height: 25,

@@ -79,7 +79,7 @@ class _ArtWorkListState extends State<ArtWorkList> {
   initData() async {
     List<RecordSnapshot> records = await PaintDataBase.readPaintRecord();
     setState(() {
-      this.records = records;
+      this.records = records.reversed.toList();
     });
   }
 

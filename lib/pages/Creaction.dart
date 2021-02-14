@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_colorfly/component/customButton.dart';
 import 'package:flutter_colorfly/global.dart';
 import 'package:flutter_colorfly/pages/AnimationTest.dart';
 import 'package:flutter_colorfly/utils/HexColor.dart';
@@ -53,14 +54,12 @@ class CreationState extends State<Creaction> {
             '从你的相册或照相导入一张线图进行涂色吧！',
             style: TextStyle(color: HexColor('#4b4b4b'), fontSize: 14),
           ),
-          FlatButton(
-              onPressed: onPressCamera,
-              highlightColor: Colors.transparent,
-              splashColor: Colors.transparent,
-              padding: EdgeInsets.only(bottom: 20, top: 40),
+          CustomButton(
+              onTap: onPressCamera,
               child: Container(
                 width: btWidth,
                 height: 50,
+                margin: EdgeInsets.only(bottom: 20, top: 40),
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),
@@ -71,14 +70,12 @@ class CreationState extends State<Creaction> {
                   style: TextStyle(color: Colors.white, fontSize: 20),
                 ),
               )),
-          FlatButton(
-              onPressed: onPressAlbum,
-              highlightColor: Colors.transparent,
-              splashColor: Colors.transparent,
-              padding: EdgeInsets.only(bottom: 20, top: 20),
+          CustomButton(
+              onTap: onPressAlbum,
               child: Container(
                 width: btWidth,
                 height: 50,
+                margin: EdgeInsets.only(bottom: 20, top: 20),
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),

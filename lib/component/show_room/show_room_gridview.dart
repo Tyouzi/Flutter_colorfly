@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_colorfly/component/cells/show_room_cell.dart';
+import 'package:flutter_colorfly/config/event_names.dart';
 import 'package:flutter_colorfly/global.dart';
 import 'package:flutter_colorfly/pages/showroom/showroom_detail.dart';
 import 'package:flutter_colorfly/service/FetchClient.dart';
@@ -11,6 +12,7 @@ import 'package:flutter_colorfly/service/ShowRoomRequest.dart';
 import 'package:flutter_colorfly/utils/HexColor.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class ShowRoomGridView extends StatefulWidget {
   String title;
@@ -22,26 +24,25 @@ class ShowRoomGridView extends StatefulWidget {
 
 class _ShowRoomGridViewState extends State<ShowRoomGridView>
     with AutomaticKeepAliveClientMixin {
-  ScrollController _scrollController;
+  // ScrollController _scrollController;
+  RefreshController _refreshController;
   String title;
   List dataImg = [];
   _ShowRoomGridViewState(this.title);
-  bool is_loading = false;
+  // bool is_loading = false;
   String previousDate = '';
   bool loading = true;
   @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
-
-    _scrollController.dispose();
   }
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-
+    _refreshController = RefreshController(initialRefresh: false);
     if (title == '发现') {
       ShowRoomRequest.getAllPaintings().then((response) {
         print(response);
@@ -66,14 +67,9 @@ class _ShowRoomGridViewState extends State<ShowRoomGridView>
       });
     }
 
-    _scrollController = new ScrollController();
-    _scrollController.addListener(() {
-      if (_scrollController.position.pixels >=
-          _scrollController.position.maxScrollExtent - 100) {
-        if (!is_loading) {
-          is_loading = true;
-          this.handleLoadMore();
-        }
+    bus.on(EventNames.changeBottomBar, (arg) async {
+      if (arg == 1) {
+        _refreshController.requestRefresh();
       }
     });
   }
@@ -87,7 +83,7 @@ class _ShowRoomGridViewState extends State<ShowRoomGridView>
         setState(() {
           dataImg.addAll(response.data['data']);
         });
-        is_loading = false;
+        _refreshController.loadComplete();
       });
     } else {
       ShowRoomRequest.getHotPaintingsList(date: previousDate).then((response) {
@@ -97,13 +93,13 @@ class _ShowRoomGridViewState extends State<ShowRoomGridView>
           setState(() {
             dataImg.addAll(response.data['data']);
           });
-          is_loading = false;
+          _refreshController.loadComplete();
         });
       });
     }
   }
 
-  Future onListRefresh() async {
+  onListRefresh() async {
     if (title == '发现') {
       int _targetId = dataImg[0]['id'];
       Response response = await ShowRoomRequest.getAllPaintings(
@@ -116,7 +112,7 @@ class _ShowRoomGridViewState extends State<ShowRoomGridView>
       setState(() {
         dataImg = newData;
       });
-      return response;
+      _refreshController.refreshCompleted();
     }
   }
 
@@ -135,27 +131,37 @@ class _ShowRoomGridViewState extends State<ShowRoomGridView>
       return SpinKitRing(color: HexColor(themeColor));
     }
     return Container(
-        child: RefreshIndicator(
-      onRefresh: this.onListRefresh,
-      child: GridView.builder(
-          controller: _scrollController,
-          padding: EdgeInsets.all(5),
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              childAspectRatio: 1,
-              mainAxisSpacing: 5,
-              crossAxisSpacing: 5),
-          itemCount: dataImg.length,
-          itemBuilder: (context, index) {
-            return ShowRoomCell(
-              dataImg[index]['url'],
-              index,
-              onPress: (index) {
-                this.onCellPress(index);
-              },
-            );
-          }),
-    ));
+      child: SmartRefresher(
+        header: MaterialClassicHeader(
+          color: HexColor(themeColor),
+        ),
+        enablePullDown: true,
+        enablePullUp: true,
+        footer: ClassicFooter(
+          loadStyle: LoadStyle.ShowWhenLoading,
+        ),
+        controller: this._refreshController,
+        onRefresh: this.onListRefresh,
+        onLoading: this.handleLoadMore,
+        child: GridView.builder(
+            padding: EdgeInsets.all(5),
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                childAspectRatio: 1,
+                mainAxisSpacing: 5,
+                crossAxisSpacing: 5),
+            itemCount: dataImg.length,
+            itemBuilder: (context, index) {
+              return ShowRoomCell(
+                dataImg[index]['url'],
+                index,
+                onPress: (index) {
+                  this.onCellPress(index);
+                },
+              );
+            }),
+      ),
+    );
   }
 
   @override

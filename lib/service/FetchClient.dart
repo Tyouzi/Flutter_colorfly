@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
@@ -59,7 +60,32 @@ class FetchClient {
       }
       return response;
     } catch (e) {
-      print('error ===' + e.message);
+      if (e.response.statusCode == 401 || e.response.statusCode == 403) {
+        UserRequest.login();
+      }
+    }
+  }
+
+  static Future delete(String url, map) async {
+    try {
+      var sp = await SharedPreferences.getInstance();
+      dio.options.headers["Authorization"] = sp.getString('token');
+      Response response = await dio.delete(url,
+          data: map,
+          options: Options(
+              followRedirects: false,
+              validateStatus: (status) {
+                return status < 500;
+              }));
+      if (response.statusCode != null &&
+          (response.statusCode == 401 || response.statusCode == 403)) {
+        bool result = await UserRequest.login();
+        if (result) {
+          response = await FetchClient.post(url, map);
+        }
+      }
+      return response;
+    } catch (e) {
       if (e.response.statusCode == 401 || e.response.statusCode == 403) {
         UserRequest.login();
       }

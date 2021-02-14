@@ -4,4 +4,5 @@ class ImgAssets {
   static String paintingContinue_black_on = 'images/painting/brere.png';
   static String paintingComplate = 'images/painting/calpas.png';
   static String ic_inspiration = 'images/painting/ic_inspiration.png';
+  static String showMoreButton = 'images/painting/camouflageable.png';
 }

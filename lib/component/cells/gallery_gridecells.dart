@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_colorfly/component/customButton.dart';
 import 'package:flutter_colorfly/component/gallery_dialog.dart';
 import 'package:flutter_colorfly/config/event_names.dart';
 import 'package:flutter_colorfly/config/routes.dart';
@@ -75,11 +76,10 @@ class GalleryCellsState extends State {
             tag: template.id,
             child: AspectRatio(
                 aspectRatio: 1,
-                child: FlatButton(
-                  onPressed: () {
+                child: CustomButton(
+                  onTap: () {
                     this.onPress(template.id);
                   },
-                  padding: EdgeInsets.all(0),
                   child: Container(
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(12),

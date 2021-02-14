@@ -35,4 +35,17 @@ class UserRequest {
     Response response = await FetchClient.get(requestUri, {});
     return response;
   }
+
+  static Future<Response> getMyPaintings(int page) async {
+    String requestUri = '/me/paintings';
+    Response response =
+        await FetchClient.get(requestUri, {"page": page, "limit": 24});
+    return response;
+  }
+
+  static Future<Response> deleteMyPaintings(int id) async {
+    String requestUri = '/paintings/${id}';
+    Response response = await FetchClient.delete(requestUri, {});
+    return response;
+  }
 }

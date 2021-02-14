@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_colorfly/component/customButton.dart';
 
 class ArtWorkCell extends StatelessWidget {
   Function onPress;
@@ -26,8 +27,7 @@ class ArtWorkCell extends StatelessWidget {
           width: 100,
           height: 100,
           padding: EdgeInsets.all(7),
-          child: FlatButton(
-            padding: EdgeInsets.zero,
+          child: CustomButton(
             child: Container(
               child: Image.file(File(url)),
               decoration: BoxDecoration(
@@ -35,7 +35,7 @@ class ArtWorkCell extends StatelessWidget {
                 color: Colors.white,
               ),
             ),
-            onPressed: () {
+            onTap: () {
               onPress(index);
             },
           ),

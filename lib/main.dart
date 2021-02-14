@@ -61,9 +61,9 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
     initData();
     bus.on(EventNames.changeBottomBar, (arg) {
-      _pageController.jumpToPage(3);
+      _pageController.jumpToPage(arg);
       setState(() {
-        currentIndex = 3;
+        currentIndex = arg;
       });
     });
   }

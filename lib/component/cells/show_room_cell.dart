@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_colorfly/component/customButton.dart';
 import 'package:flutter_colorfly/service/FetchClient.dart';
 
 class ShowRoomCell extends StatefulWidget {
@@ -41,9 +42,8 @@ class _ShowRoomCellState extends State<ShowRoomCell> {
     return Container(
       color: Colors.white,
       padding: EdgeInsets.all(3),
-      child: FlatButton(
-          padding: EdgeInsets.zero,
-          onPressed: () {
+      child: CustomButton(
+          onTap: () {
             this.onPress(index);
           },
           child: Hero(

@@ -3,9 +3,11 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_colorfly/config/event_names.dart';
 import 'package:flutter_colorfly/config/palettes.dart';
+import 'package:flutter_colorfly/pages/Publish.dart';
 import 'package:flutter_colorfly/utils/DataBaseUtils.dart';
 import 'package:flutter_colorfly/utils/sembast_db.dart';
 import 'package:flutter_colorfly/utils/HexColor.dart';
@@ -73,16 +75,20 @@ class _PaintingWebViewState extends State<PaintingWebView> {
     ));
   }
 
+  showLoading() {
+    EasyLoading.show(dismissOnTap: false, maskType: EasyLoadingMaskType.black);
+  }
+
   onFinishClick() {
     popStatus = 1;
     this._sendMsgToWebView('quit');
-    EasyLoading.show();
+    showLoading();
   }
 
   onPopClick() {
     popStatus = 0;
     this._sendMsgToWebView('quit');
-    EasyLoading.show();
+    showLoading();
   }
 
   onLockClick() {
@@ -115,30 +121,51 @@ class _PaintingWebViewState extends State<PaintingWebView> {
     addWebListener();
   }
 
-  Future<String> _createFileFromString(String data) async {
+  Future<String> _createFileFromString(String data, String name) async {
     final encodedStr = data;
     Uint8List bytes = base64.decode(encodedStr);
     String dir = (await getApplicationDocumentsDirectory()).path;
-    int timeNow = DateTime.now().millisecondsSinceEpoch;
-    String fullPath = '$dir/p${timeNow}.png';
+
+    String fullPath = '$dir/' + name;
     File file = File(fullPath);
     await file.writeAsBytes(bytes);
 
     return file.path;
   }
 
-  Future saveStatus(String imgData) async {
-    String imgPath = await _createFileFromString(imgData);
+  Future<String> _createSvgFileFromString(String data, String name) async {
+    String dir = (await getApplicationDocumentsDirectory()).path;
+
+    String fullPath = '$dir/' + name;
+    File file = File(fullPath);
+    await file.writeAsString(data);
+
+    return file.path;
+  }
+
+  Future saveStatus(String imgData, String svgData) async {
+    int timeNow = DateTime.now().millisecondsSinceEpoch;
+    String imgName = 'p${timeNow}.png';
+    String svgName = 's${timeNow}.svg';
+    String imgPath = await _createFileFromString(imgData, imgName);
+    String svgPath = await _createSvgFileFromString(svgData, svgName);
     await PaintDataBase.updatePaint(widget.svgId, widget.paintId, imgPath);
     await TemplateDataBase.updateTemplate(widget.svgId, imgPath);
+    EasyLoading.dismiss();
 
     if (popStatus == 1) {
-      bus.emit(EventNames.changeBottomBar);
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => Publish(
+              imgPath: imgPath,
+              svgId: widget.svgId,
+              svgPath: svgPath,
+            ),
+          ));
+    } else {
+      Navigator.pop(context);
     }
-    EasyLoading.dismiss();
-    bus.emit(EventNames.cellPathUpdate,
-        {"svgId": widget.svgId, "thumbUrl": imgPath});
-    Navigator.pop(context);
   }
 
   void addWebListener() {
@@ -168,7 +195,9 @@ class _PaintingWebViewState extends State<PaintingWebView> {
               String dataUri = JsonDecoder().convert(mq)['uri'];
 
               // print(dataUri.substring(22, dataUri.length));
-              saveStatus(dataUri.substring(22, dataUri.length));
+              saveStatus(dataUri.substring(22, dataUri.length),
+                  JsonDecoder().convert(mq)['svgContent']);
+
               //界面退出调用
               break;
             case 'a':
