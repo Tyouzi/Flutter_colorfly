@@ -34,9 +34,7 @@ class ArtWorkCell extends StatelessWidget {
                 color: Colors.white,
               ),
             ),
-            onTap: () {
-              onPress(index);
-            },
+            onTap: () => onPress(index),
           ),
         ));
   }

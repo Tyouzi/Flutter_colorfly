@@ -37,6 +37,14 @@ class MyApp extends StatelessWidget {
   }
 }
 
+class MyInhertedWidget extends InheritedWidget {
+  @override
+  bool updateShouldNotify(covariant InheritedWidget oldWidget) {
+    // TODO: implement updateShouldNotify
+    throw UnimplementedError();
+  }
+}
+
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
   final String title;
@@ -78,6 +86,12 @@ class _MyHomePageState extends State<MyHomePage> {
       bus.emit(EventNames.dbStatus);
     }
     sp.setInt(SharePreferenceTags.launchTimes, ++launchTimes);
+    ErrorWidget.builder = (FlutterErrorDetails flutterErrorDetails) {
+      return Scaffold(
+          body: Center(
+        child: Text("Custom Error Widget"),
+      ));
+    };
   }
 
   customEasyLoading() {

@@ -45,6 +45,13 @@ class _PaintingAppBarState extends State<PaintingAppBar>
   }
 
   @override
+  void didUpdateWidget(covariant PaintingAppBar oldWidget) {
+    // TODO: implement didUpdateWidget
+    super.didUpdateWidget(oldWidget);
+    // WidgetsBinding.instance.addPostFrameCallback((timeStamp) {});
+  }
+
+  @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
         animation: controller,
