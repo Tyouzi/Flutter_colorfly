@@ -9,10 +9,12 @@ import 'package:flutter_colorfly/config/gallery-tab.dart';
 import 'package:flutter_colorfly/global.dart';
 import 'package:flutter_colorfly/model/template_model.dart';
 import 'package:flutter_colorfly/pages/painting/painting.dart';
+import 'package:flutter_colorfly/provider_models/gallery_model.dart';
 import 'package:flutter_colorfly/service/GalleryRequest.dart';
 import 'package:flutter_colorfly/utils/DataBaseUtils.dart';
 import 'package:flutter_colorfly/utils/DialogPageRoute.dart';
 import 'package:flutter_colorfly/utils/paintHandler.dart';
+import 'package:provider/provider.dart';
 import 'package:sembast/sembast.dart';
 
 import '../gallery_dialog.dart';
@@ -33,7 +35,7 @@ class GalleryGride extends StatefulWidget {
 class GalleryGrideState extends State<GalleryGride>
     with AutomaticKeepAliveClientMixin {
   TabController tabController;
-  Map<String, List> data = new HashMap();
+  // Map<String, List> data = new HashMap();
   GalleryGrideState({
     @required this.tabController,
   });
@@ -56,9 +58,8 @@ class GalleryGrideState extends State<GalleryGride>
 
   loadDataFromDB() async {
     List<RecordSnapshot> records = await TemplateDataBase.readTemplate();
-    print('db Status ${records.length}');
     if (records.length == 0) return;
-    Map<String, List> dataMap = createDataMap();
+    Map<String, List<TemplateModel>> dataMap = {};
     for (RecordSnapshot record in records) {
       String svgId = record.value['svgId'];
       String url = record.value['url'];
@@ -66,21 +67,13 @@ class GalleryGrideState extends State<GalleryGride>
       String mainTag = record.value['mainTag'];
       TemplateModel tem = new TemplateModel(
           id: svgId, url: url, thumbnailUrl: thumbUrl, mainTag: mainTag);
-      if (dataMap.containsKey(tem.mainTag)) {
-        dataMap[tem.mainTag].add(tem);
+      if (!dataMap.containsKey(tem.mainTag)) {
+        dataMap[tem.mainTag] = [];
       }
+      dataMap[tem.mainTag].add(tem);
     }
-    setState(() {
-      dataMap = dataMap;
-    });
-  }
-
-  Map<String, List> createDataMap() {
-    GalleryTabNames.tabNames.forEach((element) {
-      data[element] = [];
-    });
-
-    return data;
+    Provider.of<GalleryModels>(context, listen: false)
+        .loadGalleryDatas(dataMap);
   }
 
   void onPress(String svgId) async {
@@ -114,26 +107,38 @@ class GalleryGrideState extends State<GalleryGride>
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return TabBarView(
-      controller: tabController,
-      children: GalleryTabNames.tabNames.map((e) {
-        List singleTemplateList = data[e] ?? [];
-        return Container(
-          color: Colors.grey[200],
-          // padding: EdgeInsets.only(top: 50),
-          child: GridView.builder(
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2, mainAxisSpacing: 0, childAspectRatio: 1.1),
-              itemCount: singleTemplateList.length,
-              itemBuilder: (context, index) {
-                return GalleryCells(
-                    tem: singleTemplateList[index],
-                    onPress: (String svgId, String imgPath) {
-                      onPress(svgId);
-                    });
-              }),
+    return Consumer<GalleryModels>(
+      builder: (context, value, child) {
+        return TabBarView(
+          controller: tabController,
+          children: GalleryTabNames.tabNames.map((e) {
+            List singleTemplateList = value.galleryData[e] ?? [];
+            return Container(
+              color: Colors.grey[200],
+              child: GridView.builder(
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      mainAxisSpacing: 0,
+                      childAspectRatio: 1.1),
+                  itemCount: singleTemplateList.length,
+                  itemBuilder: (context, index) {
+                    return Selector<GalleryModels, TemplateModel>(
+                      builder: (context, value, child) {
+                        return GalleryCells(
+                            tem: value,
+                            onPress: (String svgId, String imgPath) {
+                              onPress(svgId);
+                            });
+                      },
+                      shouldRebuild: (previous, next) =>
+                          previous.thumbnailUrl != next.thumbnailUrl,
+                      selector: (context, models) => singleTemplateList[index],
+                    );
+                  }),
+            );
+          }).toList(),
         );
-      }).toList(),
+      },
     );
   }
 

@@ -32,6 +32,8 @@ class TemplateModel {
   String get openTime => _openTime;
   String get updatedTime => _updatedTime;
 
+  set setThumbnailUrl(String thumbnailUrl) => _thumbnailUrl = thumbnailUrl;
+  set setUrl(String url) => _url = url;
   TemplateModel(
       {String id,
       bool isOpen,

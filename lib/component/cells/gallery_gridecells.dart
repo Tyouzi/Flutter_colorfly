@@ -8,6 +8,8 @@ import 'package:flutter_colorfly/config/event_names.dart';
 import 'package:flutter_colorfly/config/routes.dart';
 import 'package:flutter_colorfly/global.dart';
 import 'package:flutter_colorfly/model/template_model.dart';
+import 'package:flutter_colorfly/provider_models/gallery_model.dart';
+import 'package:provider/provider.dart';
 
 class GalleryCells extends StatefulWidget {
   final TemplateModel tem;
@@ -52,11 +54,8 @@ class GalleryCellsState extends State {
     bus.on(EventNames.cellPathUpdate, (arg) {
       String svgId = arg['svgId'];
       String imgPath = arg['thumbUrl'];
-      if (svgId == template.id) {
-        setState(() {
-          this.imgPath = imgPath;
-        });
-      }
+      Provider.of<GalleryModels>(context, listen: false)
+          .changeImgPathById(template.mainTag, svgId, imgPath);
     });
   }
 

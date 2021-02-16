@@ -113,6 +113,8 @@ class _ShowRoomGridViewState extends State<ShowRoomGridView>
         dataImg = newData;
       });
       _refreshController.refreshCompleted();
+    } else {
+      _refreshController.refreshCompleted();
     }
   }
 

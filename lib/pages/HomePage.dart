@@ -6,11 +6,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_colorfly/component/gallery/gallery_grideview.dart';
 import 'package:flutter_colorfly/component/gallery/sliverPersistentTabBar.dart';
 import 'package:flutter_colorfly/config/gallery-tab.dart';
+import 'package:flutter_colorfly/provider_models/gallery_model.dart';
 import 'package:flutter_colorfly/service/GalleryRequest.dart';
 import 'package:flutter_colorfly/service/UserRequest.dart';
 import 'package:flutter_colorfly/utils/HexColor.dart';
 import 'package:flutter_colorfly/global.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {
@@ -95,14 +97,18 @@ class HomePageState extends State<HomePage>
   Widget build(BuildContext context) {
     // TODO: implement build
 
-    return new SafeArea(
-      child: NestedScrollView(
-        headerSliverBuilder: (BuildContext context, bool isscrolled) {
-          return renderHeader();
-        },
-        body: renderBody(),
-      ),
-    );
+    return ChangeNotifierProvider(
+        create: (context) => GalleryModels(),
+        builder: (context, child) {
+          return SafeArea(
+            child: NestedScrollView(
+              headerSliverBuilder: (BuildContext context, bool isscrolled) {
+                return renderHeader();
+              },
+              body: renderBody(),
+            ),
+          );
+        });
   }
 
   @override
